@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semáforo de Clase</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+</head>
+<body>
+    <h1>Semáforo de Clase</h1>
+    <div id="login">
+        <input type="text" id="username" placeholder="Ingresa tu nombre">
+        <button onclick="join()">Unirse</button>
+    </div>
+    <div id="controls" style="display:none;">
+        <button onclick="changeStatus('green')">Estoy listo</button>
+        <button onclick="changeStatus('red')">Aún no estoy listo</button>
+    </div>
+    <div id="status_list"></div>
+    <script>
+        var socket = io();
+        var username = '';
+
+        function join() {
+            username = document.getElementById('username').value;
+            if (username) {
+                socket.emit('join', { username: username });
+                document.getElementById('login').style.display = 'none';
+                document.getElementById('controls').style.display = 'block';
+            }
+        }
+
+        function changeStatus(status) {
+            socket.emit('status_change', { username: username, status: status });
+        }
+
+        socket.on('update_status', function(data) {
+            var statusList = document.getElementById('status_list');
+            statusList.innerHTML = '';
+            for (var user in data) {
+                var color = data[user] === 'green' ? 'green' : 'red';
+                statusList.innerHTML += '<p>' + user + ': <span style="color:' + color + ';">' + data[user] + '</span></p>';
+            }
+        });
+    </script>
+</body>
+</html>

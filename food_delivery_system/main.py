@@ -1,4 +1,4 @@
-from food_delivery import FoodDeliverySystem
+from food_delivery_system.food_delivery import FoodDeliverySystem
 
 def main():
 

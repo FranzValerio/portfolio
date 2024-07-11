@@ -19,6 +19,7 @@ socket.on('update_status', function(data) {
     statusList.innerHTML = '';
     for (var user in data) {
         var color = data[user] === 'green' ? 'green' : 'red';
-        statusList.innerHTML += '<p>' + user + ': <span style="color:' + color + ';">' + data[user] + '</span></p>';
+        var statusText = data[user] === 'green' ? 'Estoy listo' : 'Aún no estoy listo';
+        statusList.innerHTML += '<p>' + user + ': <span style="color:' + color + ';">' + statusText + '</span></p>';
     }
 });
